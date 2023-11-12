@@ -25,3 +25,6 @@ function drawCharacter(){
 
     app.ticker.add(movePlayerTick);
 }
+function drawMap(){
+    
+}

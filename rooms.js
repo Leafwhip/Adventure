@@ -1,5 +1,5 @@
 const rooms = {
-    square: {
+    test: {
         map: [
             [1,1,1,1,1,1,1,1,1,1],
             [1,0,0,0,0,0,0,0,0,1],
@@ -7,15 +7,22 @@ const rooms = {
             [1,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,0,0,0,0,0,1],
-            [1,0,0,0,0,0,2,0,0,1],
+            [1,0,0,0,0,0,1,0,0,1],
             [1,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1,0,0,1],
+            [1,0,0,0,0,0,0,0,0,1,1,1,1,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         ],
-        scripts: {
-            2: function() {
-                player.vel.y -= 200;
+        keys: {
+            0: {
+                solid: false,
             },
+            1: {
+                solid: true,
+            }
         }
     },
 }
@@ -28,4 +35,9 @@ function mapPos(coordinates) {
 function gamePos(coordinates) {
     //The bottom right of the tile in game coordinates
     return [(coordinates[0] + 1) * game.tileSize, (coordinates[1] + 1) * game.tileSize];
+}
+
+function getTile(coordinates) {
+    let tile = (game.map.map[coordinates[1]]||[])[coordinates[0]] || 0;
+    return [tile, game.map.keys[tile]];
 }
