@@ -6,40 +6,15 @@ const game = {
     tileSize: 40,
     gravity: 1,
     friction: 0.2,
+    map: [],
+    frames: 0,
 }
-const player = {
-    size: {
-        width: 64,
-        height: 64,
-    },
-    movement: {
-        speed: 5,
-        jump: 100,
-        canJump: 0,
-    },
-    vel: {
-        x: 0,
-        y: 0,
-    },
-    velLimit: {
-        x: 10,
-        y:15,
-    },
-    pos: {
-        x: 0,
-        y: 0,
-    },
-    inputs: {
-        up: 0,
-        down: 0,
-        left: 0,
-        right: 0,
-    }
-}
+const player = new Player();
 async function start() {
     await loadAssets();
+    player.sprite = Sprite.from(assets.all.character);
     document.body.appendChild(app.view);
-    loadMap(rooms.square)
+    loadMap(rooms.square,[2,4]);
     drawCharacter();
 }
 start();

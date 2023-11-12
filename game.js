@@ -1,42 +1,27 @@
-function loadMap(map){
+function loadMap(map,spawn){
+    game.map = map;
+    player.pos.x = spawn[0] * game.tileSize;
+    player.pos.y = spawn[1] * game.tileSize;
+}
+function movePlayerTick(x){
+    game.frames += x;
+    if (game.frames > 60 / game.fps) {
+        game.frames -= 60 / game.fps;
+    }
+    else{ 
+        return;
+    }
 
+    player.updatePos();
+    
+    player.sprite.x = player.pos.x;
+    player.sprite.y = player.pos.y;
 }
 function drawCharacter(){
-    const character = Sprite.from(assets.all.character);
-    app.stage.addChild(character);
-
+    app.stage.addChild(player.sprite);
     
-    document.body.addEventListener('keydown',movePress);
-    document.body.addEventListener('keyup',moveRelease);
+    document.body.addEventListener('keydown', player.movePress.bind(player));
+    document.body.addEventListener('keyup', player.moveRelease.bind(player));
 
-    let frames = 0;
-    app.ticker.add((x)=>{
-        frames += x;
-        if (frames > 60 / game.fps) {
-            frames -= 60 / game.fps;
-        }
-        else{ 
-            return;
-        }
-
-        player.vel.x = player.vel.x - player.vel.x * game.friction;
-        player.vel.x = clamp(player.vel.x + player.movement.speed * (player.inputs.right - player.inputs.left), -player.velLimit.x, player.velLimit.x);
-        
-        if(player.inputs.up && player.movement.canJump){
-            player.movement.canJump = false;
-            player.vel.y -= player.movement.jump;
-        }
-        player.vel.y = clamp(player.vel.y + game.gravity, -player.velLimit.y, player.velLimit.y);
-
-        player.pos.x += player.vel.x;
-        player.pos.y += player.vel.y;
-
-        if(player.pos.y >= 400){
-            player.pos.y = 400;
-            player.vel.y = 0;
-            player.movement.canJump = true;
-        }
-        character.x = player.pos.x;
-        character.y = player.pos.y;
-    })
+    app.ticker.add(movePlayerTick);
 }
